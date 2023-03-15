@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<header class="header">
+    <ul class="menu-main">
+        <li><a href="/filter">Products</a></li>
+        <li><a href="/cart">Basket</a></li>
+    </ul>
+    <br>
+    <ul class="menu-main">
+        <th:block th:if="${#authorization.expr('isAuthenticated()')}">
+            <li th:text="${#authentication.getName()}"></li>
+            <li><a href="/logout">Logout</a></li>
+        </th:block>
+        <th:block th:if="${#authorization.expr('!isAuthenticated()')}">
+            <li><a href="/registration">Registration</a></li>
+            <li><a href="/login">Login</a></li>
+        </th:block>
+        <th:block th:if="${#authorization.expr('hasRole(''admin'')')}">
+            <li><a href="/admin">Admin panel</a></li>
+        </th:block>
+        <th:block th:if="${#authorization.expr('hasRole(''user'')')}">
+            <li><a href="/user">User panel</a></li>
+        </th:block>
+    </ul>
+</header>
+<br>
+<div class="parent">
+    <div class="filter">
+        <form action="/filter" method="get">
+            <select name="categoryId">
+                <option th:each="item :${category}" th:value="${item.id}" th:text="${item.getName()}"></option>
+            </select>
+            <!--        <input type="text" name="categoryId" placeholder="введите id категории">-->
+            <input type="text" name="nameFragment" placeholder="введите имя продукта">
+            <input type="text" name="from" placeholder="Введите min">
+            <input type="text" name="to" placeholder="Введите max">
+            <button type="submit" class="button">применить</button>
+        </form>
+    </div>
+    <br>
+    <div class="product-list">
+        <th:block th:each="item :${filtered}">
+            <div class="product-item">
+                <!--        <img src="https://html5book.ru/wp-content/uploads/2015/10/black-dress.jpg">-->
+                <h3 th:text="${item.getName()}"></h3>
+                <span th:text="${item.getPrice()}" class="price"></span>
+                <a th:href="@{/cart/add(productId=${item.getId()})}" class="button">В корзину</a>
+                <a th:href="@{/char(productId=${item.getId()})}" class="button">Подробнее</a>
+            </div>
+        </th:block>
+    </div>
+</div>
+<style type="text/css">
+
+    @import url('https://fonts.googleapis.com/css?family=PT+Sans+Caption');
+
+    .parent {
+        display: flex;
+        flex-direction: row;
+        width: 1000px;
+        height: 950px;
+        margin: 0 auto;
+    }
+
+    .filter {
+        width: 250px;
+        background: #dddddd;
+
+    }
+
+    .product-list {
+        width: 750px;
+        background: #fafafa;
+        margin: 0 auto;
+    }
+
+    .header {
+        width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+    div {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+
+    .menu-main {
+        list-style: none;
+        padding: 0 30px;
+        margin: 0;
+        font-size: 18px;
+        text-align: -moz-left;
+        position: relative;
+        background: white;
+
+    }
+
+    .menu-main:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        left: 0;
+        bottom: -20px;
+        background: radial-gradient(white 0%, white 70%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0) 100%) 0 -10px;
+        background-size: 20px 20px;
+        background-repeat: repeat-x;
+    }
+
+    .menu-main li {
+        display: inline-block;
+    }
+
+    .menu-main a {
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 15px;
+        padding: 10px 30px;
+        font-family: 'PT Sans Caption', sans-serif;
+        color: #777777;
+        transition: .3s linear;
+        position: relative;
+    }
+
+    .menu-main a:before,
+    .menu-main a:after {
+        content: "";
+        position: absolute;
+        top: calc(50% - 3px);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #F58262;
+        opacity: 0;
+        transition: .5s ease-in-out;
+    }
+
+    .menu-main a:before {
+        left: 5px;
+    }
+
+    .menu-main a:after {
+        right: 5px;
+    }
+
+    .menu-main a.current:before,
+    .menu-main a.current:after,
+    .menu-main a:hover:before,
+    .menu-main a:hover:after {
+        opacity: 1;
+    }
+
+    .menu-main a.current,
+    .menu-main a:hover {
+        color: #F58262;
+    }
+
+    @media (max-width: 680px) {
+        .menu-main li {
+            display: block;
+        }
+    }
+
+    .product-item {
+        width: 300px;
+        text-align: center;
+        margin: 0 auto;
+        border-bottom: 2px solid #F5F5F5;
+        background: white;
+        font-family: "Open Sans";
+        transition: .3s ease-in;
+    }
+
+    .product-item:hover {
+        border-bottom: 2px solid #fc5a5a;
+    }
+
+    .product-item img {
+        display: block;
+        width: 100%;
+    }
+
+    .product-list {
+        background: #fafafa;
+        padding: 15px 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .product-list h3 {
+        font-size: 18px;
+        font-weight: 400;
+        color: #5089db;
+        margin: 0 0 10px 0;
+    }
+
+    .price {
+        font-size: 16px;
+        color: #444444;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .button {
+        text-decoration: none;
+        display: inline-block;
+        padding: 0 12px;
+        background: #5089db;
+        color: white;
+        text-transform: uppercase;
+        font-size: 12px;
+        line-height: 28px;
+        transition: .3s ease-in;
+    }
+
+    .product-item:hover .button {
+        background: #fc5a5a;
+    }
+
+</style>
+</body>
+</html>

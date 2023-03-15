@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="text-center">
+<main class="form-signin w-100 m-auto">
+    <form action="/login" method="post">
+        <img class="mb-4" th:src="@{/img/shop.png}" alt="" width="200" height="200">
+        <h1 class="h3 mb-3 fw-normal">Registration</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="name">
+            <label for="floatingInput">login</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingName" name="password" placeholder="Password">
+            <label for="floatingPassword">Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingSurname" name="password" placeholder="Password">
+            <label for="floatingPassword">Surname</label>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Registration</button>
+        <div class="link-primary">
+            <a  th:href="@{/login}">Login</a>
+        </div>
+        <p class="mt-5 mb-3 text-muted">Shop application 2022</p>
+    </form>
+</main>
+
+
+</body>
+<!--<body>
+            <div class="box">
+                <h1>Регистрация</h1>
+                <form action="/registration" method="post" th:object="${appUser}">
+                    <div class="input"><input type="text" th:field="*{login}" placeholder="Введите Login"></div>
+                    <div class="input"><input type="text" th:field="*{password}" placeholder="Введите Password"></div>
+                    <div class="input"><input type="text" th:field="*{name}" placeholder="Введите Name"></div>
+                    <div class="input"><input type="text" th:field="*{surname}" placeholder="Введите Surname"></div>
+                    <div class="buttonBox">
+                        <button type="submit" class="button">Зарегистрироваться</button>
+                    </div>
+                </form>
+            </div>
+
+</body>-->
+</html>
